@@ -1,0 +1,42 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
+
+class Person {
+    private String name;
+    private Date dob;
+    private int age;
+
+    public Person(String name, String dob) throws ParseException {
+        this.name = name;
+        this.dob = new SimpleDateFormat("dd-MM-yyyy").parse(dob);
+        this.age = calculateAge();
+    }
+
+    private int calculateAge() {
+        Calendar dobCal = Calendar.getInstance();
+        dobCal.setTime(dob);
+
+        Calendar today = Calendar.getInstance();
+
+        int age = today.get(Calendar.YEAR) - dobCal.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dobCal.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+        return age;
+    }
+
+    public void displayPersonDetails() {
+        System.out.println("Name: " + name);
+        System.out.println("Date of Birth: " + new SimpleDateFormat("dd-MM-yyyy").format(dob));
+        System.out.println("Age: " + age);
+    }
+
+    public static void main(String[] args) throws ParseException {
+        Person person = new Person("John Doe", "10-05-1985");
+        person.displayPersonDetails();
+    }
+}
